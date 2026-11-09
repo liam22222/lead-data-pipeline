@@ -1,0 +1,55 @@
+# A niche = what to search for in OpenStreetMap + who the ideal lead is.
+# Copy this file to target another niche (e.g. law firms, gyms, real estate agencies).
+
+name = "Dental clinics"
+
+# OpenStreetMap tags that identify the business. Any match counts.
+# See https://wiki.openstreetmap.org/wiki/Tag:amenity%3Ddentist
+osm_tags = [
+    ["amenity", "dentist"],
+    ["healthcare", "dentist"],
+]
+
+# Names that usually mean a chain or a hospital, not an independent practice.
+chain_keywords = ["aspen dental", "western dental", "smile direct", "bright now", "coast dental",
+                  "gentle dental", "hospital", "university", "clinic group", "dental group"]
+
+# Who is buying these leads, in plain words. Claude scores every lead against this.
+ideal_customer_profile = """
+We are a dental marketing agency. We sell online booking, Google review generation
+and patient-reactivation campaigns to dental clinics.
+
+Best leads:
+- Independent practices (not chains, hospitals or universities)
+- Have a website we can improve, but NO online booking yet
+- Offer high-value services (implants, Invisalign/aligners, cosmetic, emergency)
+- Publish a direct email or contact form so we can reach the owner
+
+Poor leads:
+- No website at all and no phone (hard to reach)
+- Chains, hospitals, universities
+- Already use an online booking platform (less to sell)
+"""
+
+[signals]
+# Text or links on a website that mean the clinic already books online.
+online_booking = ["book online", "book now", "book an appointment online", "request appointment online",
+                  "schedule online", "zocdoc", "nexhealth", "localmed", "flexbook", "doctible",
+                  "opencare", "calendly", "acuityscheduling", "dentrix ascend", "lighthouse360",
+                  "yapi", "solutionreach", "weave.com", "carestack"]
+# High-value services worth more to the agency's clients.
+premium_services = ["implant", "invisalign", "aligner", "veneer", "cosmetic", "whitening",
+                    "emergency", "sedation", "orthodont", "all-on-4"]
+
+[scoring]
+# Rule-based score (0-10). Used on its own without an API key, and shown next to the AI score.
+has_website = 2
+has_email = 2
+has_phone = 1
+no_online_booking = 3
+premium_service = 0.5      # per service found, max 2
+chain_penalty = -4
+site_unreachable = -1
+
+# Leads at or above this score are "hot": Slack alert + top of the report.
+hot_threshold = 7

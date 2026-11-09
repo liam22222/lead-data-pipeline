@@ -1,0 +1,23 @@
+{
+  "version": 0.6,
+  "elements": [
+    {"type": "node", "id": 101, "lat": 30.2672, "lon": -97.7431,
+     "tags": {"amenity": "dentist", "name": "Riverbend Family Dental", "website": "riverbend-dental.test",
+              "phone": "(512) 555-0101", "addr:housenumber": "120", "addr:street": "Congress Ave",
+              "addr:city": "Austin", "addr:state": "TX", "addr:postcode": "78701"}},
+    {"type": "way", "id": 202, "center": {"lat": 30.2673, "lon": -97.7432},
+     "tags": {"healthcare": "dentist", "name": "Riverbend Family Dental", "website": "https://www.riverbend-dental.test/",
+              "opening_hours": "Mo-Fr 08:00-17:00"}},
+    {"type": "node", "id": 303, "lat": 30.30, "lon": -97.70,
+     "tags": {"amenity": "dentist", "name": "Hill Country Smiles", "contact:website": "https://hillcountrysmiles.test",
+              "contact:phone": "+1 512 555 0303"}},
+    {"type": "node", "id": 404, "lat": 30.31, "lon": -97.71,
+     "tags": {"amenity": "dentist", "name": "Aspen Dental", "website": "https://aspen-dental-austin.test"}},
+    {"type": "node", "id": 505, "lat": 30.32, "lon": -97.72,
+     "tags": {"amenity": "dentist", "name": "Dr. Lee Dentistry", "phone": "512-555-0505"}},
+    {"type": "node", "id": 606, "lat": 30.33, "lon": -97.73,
+     "tags": {"amenity": "dentist", "name": "Broken Link Dental", "website": "http://broken-dental.test"}},
+    {"type": "node", "id": 707, "lat": 30.34, "lon": -97.74,
+     "tags": {"amenity": "dentist"}}
+  ]
+}
