@@ -15,19 +15,44 @@ from leadpipe.models import Lead
 log = logging.getLogger(__name__)
 
 NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
+PHOTON_URL = "https://photon.komoot.io/api/"
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"
 AREA_OFFSET = {"relation": 3_600_000_000, "way": 2_400_000_000}
+PHOTON_TYPES = {"R": "relation", "W": "way", "N": "node"}
 
 
-def find_area_id(city: str, http: HttpClient) -> int:
-    """Turn "Austin, TX" into an Overpass area id."""
+def _area_from_nominatim(city: str, http: HttpClient) -> int | None:
     resp = http.get(NOMINATIM_URL, params={"q": city, "format": "jsonv2", "limit": 5})
     resp.raise_for_status()
     for place in resp.json():
         offset = AREA_OFFSET.get(place.get("osm_type"))
         if offset and place.get("class") in {"boundary", "place"}:
             return offset + int(place["osm_id"])
-    raise ValueError(f"Could not find a city boundary for {city!r} in OpenStreetMap")
+    return None
+
+
+def _area_from_photon(city: str, http: HttpClient) -> int | None:
+    resp = http.get(PHOTON_URL, params={"q": city, "limit": 5})
+    resp.raise_for_status()
+    for feature in resp.json().get("features", []):
+        p = feature.get("properties", {})
+        offset = AREA_OFFSET.get(PHOTON_TYPES.get(p.get("osm_type"), ""))
+        if offset and p.get("osm_key") in {"boundary", "place"}:
+            return offset + int(p["osm_id"])
+    return None
+
+
+def find_area_id(city: str, http: HttpClient) -> int:
+    """Turn "Austin, TX" into an Overpass area id. Nominatim first, Photon (also OSM data) as backup."""
+    for name, lookup in (("Nominatim", _area_from_nominatim), ("Photon", _area_from_photon)):
+        try:
+            area = lookup(city, http)
+            if area:
+                return area
+            log.info("%s found no city boundary for %r", name, city)
+        except Exception as e:
+            log.warning("%s lookup failed (%s), trying the next geocoder", name, e)
+    raise ValueError(f"Could not find a city boundary for {city!r}. Try a fuller name, e.g. 'Austin, Texas, USA'.")
 
 
 def build_query(area_id: int, niche: Niche, timeout: int = 90) -> str:

@@ -65,9 +65,11 @@ class Settings:
             anthropic_api_key=os.getenv("ANTHROPIC_API_KEY") or None,
             anthropic_model=os.getenv("ANTHROPIC_MODEL") or "claude-haiku-5-5",
             slack_webhook_url=os.getenv("SLACK_WEBHOOK_URL") or None,
-            contact_email=os.getenv("CONTACT_EMAIL") or "leadpipe@example.com",
+            contact_email=os.getenv("CONTACT_EMAIL") or "",
         )
 
     @property
     def user_agent(self) -> str:
-        return f"leadpipe/0.1 (+{self.contact_email})"
+        # OSM services reject generic agents; identify the app and, if set, a real contact.
+        contact = self.contact_email if self.contact_email and "example." not in self.contact_email else ""
+        return f"leadpipe/0.1 (+https://github.com/liam22222/lead-data-pipeline{'; ' + contact if contact else ''})"

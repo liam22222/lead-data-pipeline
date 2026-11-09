@@ -44,7 +44,7 @@ flowchart LR
 - **AI with a safety net:** if the API key is missing or a call fails, the lead keeps its rule-based score, so the pipeline never blocks on the model.
 - **Incremental:** run it daily from cron; only new or stale leads cost crawling time and API calls.
 - **Config, not code:** a niche is one TOML file holding the OSM tags, chain keywords, buying signals, scoring weights and the ideal customer profile.
-- **Tested offline:** 18 tests with recorded fixtures cover parsing, dedup, extraction, scoring, AI caching and failure, incremental runs and Slack filtering. CI runs on Python 3.10 and 3.12.
+- **Tested offline:** 22 tests with recorded fixtures cover geocoding fallback, parsing, dedup, extraction, scoring, AI caching and failure, incremental runs and Slack filtering. CI runs on Python 3.10 and 3.12.
 
 ## Quick start
 
