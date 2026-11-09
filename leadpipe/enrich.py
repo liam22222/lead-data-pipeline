@@ -89,7 +89,7 @@ def is_chain(name: str, niche: Niche) -> bool:
 
 
 def enrich_lead(lead: Lead, niche: Niche, http: HttpClient) -> Lead:
-    lead.is_chain = is_chain(lead.name, niche)
+    lead.is_chain = lead.is_chain or is_chain(lead.name, niche)
     lead.last_updated = now()
     if not lead.website:
         lead.site_status = "no_website"

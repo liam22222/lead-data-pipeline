@@ -1,0 +1,17 @@
+{
+  "places": [
+    {"id": "g1", "displayName": {"text": "Riverbend Family Dental"}, "formattedAddress": "120 Congress Ave, Austin, TX 78701, USA",
+     "location": {"latitude": 30.2672, "longitude": -97.7431}, "websiteUri": "https://www.riverbend-dental.test/",
+     "nationalPhoneNumber": "(512) 555-0101", "internationalPhoneNumber": "+1 512-555-0101",
+     "rating": 4.9, "userRatingCount": 31, "businessStatus": "OPERATIONAL", "primaryType": "dentist"},
+    {"id": "g2", "displayName": {"text": "Smile Co. Downtown"}, "formattedAddress": "1 Main St, Austin, TX",
+     "location": {"latitude": 30.27, "longitude": -97.74}, "websiteUri": "https://smileco.test/downtown",
+     "rating": 4.5, "userRatingCount": 812, "businessStatus": "OPERATIONAL"},
+    {"id": "g3", "displayName": {"text": "Smile Co. North"}, "formattedAddress": "2 Main St, Austin, TX",
+     "websiteUri": "https://smileco.test/north", "businessStatus": "OPERATIONAL"},
+    {"id": "g4", "displayName": {"text": "Smile Co. South"}, "formattedAddress": "3 Main St, Austin, TX",
+     "websiteUri": "https://www.smileco.test/south", "businessStatus": "OPERATIONAL"},
+    {"id": "g5", "displayName": {"text": "Closed Teeth"}, "businessStatus": "CLOSED_PERMANENTLY"}
+  ],
+  "nextPageToken": "page2"
+}

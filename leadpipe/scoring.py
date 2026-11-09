@@ -41,6 +41,8 @@ def rule_score(lead: Lead, niche: Niche) -> tuple[float, list[str]]:
         add(w.no_online_booking, "no online booking found")
     if lead.premium_services:
         add(min(len(lead.premium_services) * w.premium_service, 2), "premium services: " + ", ".join(lead.premium_services))
+    if lead.review_count is not None and lead.review_count < w.few_reviews_below:
+        add(w.few_reviews, f"only {lead.review_count} Google reviews")
     if lead.is_chain:
         add(w.chain_penalty, "looks like a chain/hospital")
     return round(max(0.0, min(10.0, s)), 1), reasons
@@ -63,6 +65,8 @@ def lead_facts(lead: Lead) -> dict:
         "site_platform": lead.site_platform,
         "socials": sorted(lead.socials),
         "looks_like_chain": lead.is_chain,
+        "google_rating": lead.rating,
+        "google_review_count": lead.review_count,
     }
 
 

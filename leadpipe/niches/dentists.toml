@@ -10,9 +10,15 @@ osm_tags = [
     ["healthcare", "dentist"],
 ]
 
+# Google Places searches ("<query> in <city>"). Several phrasings find more clinics; results are deduped.
+google_queries = ["dentist", "dental clinic", "orthodontist", "pediatric dentist"]
+
 # Names that usually mean a chain or a hospital, not an independent practice.
-chain_keywords = ["aspen dental", "western dental", "smile direct", "bright now", "coast dental",
-                  "gentle dental", "hospital", "university", "clinic group", "dental group"]
+# A website shared by 3+ locations in the results is also treated as a chain.
+chain_keywords = ["aspen dental", "western dental", "castle dental", "monarch dental", "bright now",
+                  "coast dental", "gentle dental", "perfect teeth", "kool smiles", "comfort dental",
+                  "great expressions", "heartland dental", "pacific dental", "dental depot",
+                  "smile direct", "affordable dentures", "hospital", "university"]
 
 # Who is buying these leads, in plain words. Claude scores every lead against this.
 ideal_customer_profile = """
@@ -24,6 +30,7 @@ Best leads:
 - Have a website we can improve, but NO online booking yet
 - Offer high-value services (implants, Invisalign/aligners, cosmetic, emergency)
 - Publish a direct email or contact form so we can reach the owner
+- Few Google reviews (under ~50) are a plus: easy win for review generation
 
 Poor leads:
 - No website at all and no phone (hard to reach)
@@ -48,6 +55,8 @@ has_email = 2
 has_phone = 1
 no_online_booking = 3
 premium_service = 0.5      # per service found, max 2
+few_reviews = 1            # few Google reviews: room to sell review generation
+few_reviews_below = 50
 chain_penalty = -4
 site_unreachable = -1
 

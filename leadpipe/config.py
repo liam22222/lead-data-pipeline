@@ -21,6 +21,8 @@ class Scoring:
     has_phone: float = 1
     no_online_booking: float = 3
     premium_service: float = 0.5
+    few_reviews: float = 1
+    few_reviews_below: int = 50
     chain_penalty: float = -4
     site_unreachable: float = -1
     hot_threshold: float = 7
@@ -32,6 +34,7 @@ class Niche:
     osm_tags: list[tuple[str, str]]
     ideal_customer_profile: str
     chain_keywords: list[str] = field(default_factory=list)
+    google_queries: list[str] = field(default_factory=list)
     online_booking: list[str] = field(default_factory=list)
     premium_services: list[str] = field(default_factory=list)
     scoring: Scoring = field(default_factory=Scoring)
@@ -45,6 +48,7 @@ class Niche:
             osm_tags=[(k, v) for k, v in data["osm_tags"]],
             ideal_customer_profile=data["ideal_customer_profile"].strip(),
             chain_keywords=[s.lower() for s in data.get("chain_keywords", [])],
+            google_queries=data.get("google_queries", [data["name"]]),
             online_booking=[s.lower() for s in signals.get("online_booking", [])],
             premium_services=[s.lower() for s in signals.get("premium_services", [])],
             scoring=Scoring(**data.get("scoring", {})),
@@ -57,6 +61,7 @@ class Settings:
     anthropic_model: str
     slack_webhook_url: str | None
     contact_email: str
+    google_maps_api_key: str | None = None
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -66,6 +71,7 @@ class Settings:
             anthropic_model=os.getenv("ANTHROPIC_MODEL") or "claude-haiku-5-5",
             slack_webhook_url=os.getenv("SLACK_WEBHOOK_URL") or None,
             contact_email=os.getenv("CONTACT_EMAIL") or "",
+            google_maps_api_key=os.getenv("GOOGLE_MAPS_API_KEY") or None,
         )
 
     @property

@@ -27,6 +27,9 @@ class Lead(BaseModel):
     lat: float | None = None
     lon: float | None = None
     opening_hours: str | None = None
+    rating: float | None = None        # Google rating, 1-5
+    review_count: int | None = None
+    business_status: str | None = None
 
     # Enrichment
     site_status: str = "not_checked"   # ok | unreachable | no_website | not_checked
