@@ -106,3 +106,9 @@ Business data comes from Google Places (subject to the [Google Maps Platform ter
 ---
 
 Built by Liam A., data & automation engineer. Need a pipeline like this for your business? [Find me on Upwork](https://www.upwork.com/freelancers/~01884dc7f75a62b410).
+
+## License
+
+Copyright © 2026 Liam Ashkenazi. All rights reserved.
+
+The code is published so you can read it and see how it works. Copying, modifying, redistributing or using it commercially requires my written permission. If you'd like a pipeline like this for your own niche, get in touch.
