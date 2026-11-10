@@ -25,6 +25,7 @@ def main(argv: list[str] | None = None) -> None:
     r.add_argument("--source", choices=["auto", "google", "osm"], default="auto",
                    help="auto = Google Places if GOOGLE_MAPS_API_KEY is set, else OpenStreetMap")
     r.add_argument("--osm-file", type=Path, help="replay a saved Overpass JSON response (offline)")
+    r.add_argument("--places-file", type=Path, help="save Google Places response here on first run, load it on subsequent runs (saves API quota)")
     r.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args(argv)
 
@@ -33,7 +34,7 @@ def main(argv: list[str] | None = None) -> None:
     result = run(RunOptions(
         city=args.city, niche_path=args.niche, out_dir=args.out, db_path=args.db, limit=args.limit,
         refresh_days=args.refresh_days, use_ai=not args.no_ai, send_slack=not args.no_slack,
-        osm_file=args.osm_file, source=args.source,
+        osm_file=args.osm_file, places_file=args.places_file, source=args.source,
     ))
     s = result.stats
     print(f"\n{s['found']} leads · {s['with_website']} with website · {s['with_email']} with email · "

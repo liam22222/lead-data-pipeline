@@ -32,6 +32,7 @@ class RunOptions:
     use_ai: bool = True
     send_slack: bool = True
     osm_file: Path | None = None      # replay a saved Overpass response instead of querying
+    places_file: Path | None = None   # save Google Places raw response here; load it on subsequent runs
     source: str = "auto"              # auto (Google if a key is set, else OSM) | google | osm
     chain_min_locations: int = 3      # same website at this many locations = a chain
 
@@ -76,7 +77,12 @@ def run(opts: RunOptions, settings: Settings | None = None, http: HttpClient | N
     if opts.osm_file:
         raw = osm.parse_elements(json.loads(Path(opts.osm_file).read_text()), city=opts.city, category=niche.name)
     elif source == "google":
-        raw = google.fetch_leads(opts.city, niche, http, settings.google_maps_api_key)
+        if opts.places_file and Path(opts.places_file).exists():
+            log.info("Loading Google Places results from %s (skipping API calls)", opts.places_file)
+            raw = google.parse_places(json.loads(Path(opts.places_file).read_text()), opts.city, niche.name)
+        else:
+            raw = google.fetch_leads(opts.city, niche, http, settings.google_maps_api_key,
+                                     save_to=opts.places_file)
     else:
         raw = osm.fetch_leads(opts.city, niche, http)
 

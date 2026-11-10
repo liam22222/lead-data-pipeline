@@ -49,9 +49,12 @@ def parse_places(payload: dict, city: str | None, category: str) -> list[Lead]:
     return leads
 
 
-def fetch_leads(city: str, niche: Niche, http: HttpClient, api_key: str, max_pages: int = MAX_PAGES) -> list[Lead]:
+def fetch_leads(city: str, niche: Niche, http: HttpClient, api_key: str, max_pages: int = MAX_PAGES,
+                save_to: "Path | None" = None) -> list[Lead]:
+    import json
+    from pathlib import Path
     headers = {"X-Goog-Api-Key": api_key, "X-Goog-FieldMask": FIELDS, "Content-Type": "application/json"}
-    leads: list[Lead] = []
+    all_places: list[dict] = []
     calls = 0
     for term in niche.google_queries:
         token = None
@@ -64,10 +67,14 @@ def fetch_leads(city: str, niche: Niche, http: HttpClient, api_key: str, max_pag
             if resp.status_code >= 400:
                 raise RuntimeError(f"Google Places error {resp.status_code}: {resp.text[:300]}")
             data = resp.json()
-            leads += parse_places(data, city, niche.name)
+            all_places.extend(data.get("places", []))
             token = data.get("nextPageToken")
             if not token:
                 break
             time.sleep(1)  # the next page token needs a moment to become valid
-    log.info("Google Places: %d results from %d calls (%d free Enterprise calls a month)", len(leads), calls, 1000)
-    return leads
+    log.info("Google Places: %d results from %d calls (%d free Enterprise calls a month)", len(all_places), calls, 1000)
+    if save_to:
+        Path(save_to).parent.mkdir(parents=True, exist_ok=True)
+        Path(save_to).write_text(json.dumps({"places": all_places}, indent=2))
+        log.info("Saved raw Google Places response to %s", save_to)
+    return parse_places({"places": all_places}, city, niche.name)
