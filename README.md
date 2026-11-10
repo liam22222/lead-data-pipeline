@@ -14,7 +14,15 @@ CSV:    output/dental-clinics-austin-texas.csv
 Report: output/dental-clinics-austin-texas.html
 ```
 
-The demo buyer is a **dental marketing agency** that sells online booking and patient-reactivation campaigns. Its best leads are independent clinics with a website but **no online booking yet**. Swap one config file and the same pipeline finds law firms, gyms, real estate agencies or any business type in OpenStreetMap.
+[![leadpipe report walkthrough](docs/demo.gif)](docs/demo.mp4)
+
+*The HTML report from a real run: 126 dental clinics in Tel Aviv (names and contacts blurred). [Watch the video with sound](docs/demo.mp4).*
+
+## Why I built it
+
+I'm a freelance backend and data engineer, and I use leadpipe myself to find clients. Instead of scrolling Google Maps by hand, I run it on a city, open the report, filter to the hot leads (a website and an email, but no online booking), and reach out to the clinics where I can actually help. The scoring tells me why each one is worth a message, so outreach stays short and specific.
+
+It works just as well for agencies. For a **dental marketing agency** that sells online booking and patient-reactivation campaigns, the best leads are independent clinics with a website but **no online booking yet**. Swap one config file and the same pipeline finds law firms, gyms, real estate agencies or any business type in OpenStreetMap.
 
 ## How it works
 
